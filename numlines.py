@@ -11,9 +11,9 @@ build/, etc.
 
 import os
 
+queue = []
 def get_dir_content(path):
     entries = os.listdir(path)
-        
 
 # Handle command line arguments
 # By default display totals lines, else if verbose then more information
