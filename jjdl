@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# Simple script to download youtube video into m4a format to a directory
+# Default directory: ~/Downloads/youtubedl
+
+if [ "$1" == "" ]; then
+    echo "Usage: $0 [OPTION]... [URL]..."
+    echo "Try '$0 --help' for more information."
+    exit 1
+fi
+
+mkdir -p ~/Downloads/youtubedl
+cd ~/Downloads/youtubedl || exit 1
+youtube-dl  -o "%(title)s.%(ext)s" -i --format m4a --embed-thumbnail --add-metadata $1
