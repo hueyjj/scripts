@@ -3,9 +3,11 @@
 # Simple script to download youtube video into m4a format to a directory
 # Default directory: ~/Downloads/youtubedl
 
+PROGRAM_NAME=jjdl
+
 if [ "$1" == "" ]; then
-    echo "Usage: $0 [OPTION]... [URL]..."
-    echo "Try '$0 --help' for more information."
+    echo "Usage: $PROGRAM_NAME [OPTION]... [URL]..."
+    echo "Try '$PROGRAM_NAME --help' for more information."
     exit 1
 fi
 
