@@ -21,14 +21,19 @@ function DVIActive {
     xrandr | grep "^\b$DVI\b" | grep "\bconnected\b" >/dev/null
 }
 
-while true
-do
-    if HDMI2Active && DVIActive 
-    then
-        EnableDualMonitorDisplay
-    else
-        EnableLaptopDisplay
-    fi
+function Main {
+    while true
+    do
+        if HDMI2Active && DVIActive 
+        then
+            EnableDualMonitorDisplay
+        else
+            EnableLaptopDisplay
+        fi
 
-    sleep 1
-done
+        sleep 1
+    done
+}
+
+# Start actual script in background
+Main &
