@@ -4,13 +4,17 @@ LAPTOP=eDP1
 HDMI=HDMI2
 DVI=DP1
 
+LAPTOP_DISPLAY_ENABLED="false"
+
 function EnableLaptopDisplay {
     xrandr --output $LAPTOP --auto --output $HDMI --off --output $DVI --off
+    LAPTOP_DISPLAY_ENABLED="true"
 }
 
 function EnableDualMonitorDisplay {
     xrandr --output $HDMI --auto --output $DVI --auto
     xrandr --output $LAPTOP --off --output $HDMI --right-of $DVI
+    LAPTOP_DISPLAY_ENABLED="false"
 }
 
 function HDMI2Active {
@@ -22,13 +26,23 @@ function DVIActive {
 }
 
 function Main {
+    if HDMI2Active && DVIActive 
+    then
+        EnableDualMonitorDisplay
+    else
+        EnableLaptopDisplay
+    fi
+
+    # Check for when monitors are plugged in
     while true
     do
-        if HDMI2Active && DVIActive 
-        then
-            EnableDualMonitorDisplay
-        else
+        if [ "$LAPTOP_DISPLAY_ENABLED" = "false" ] && ! HDMI2Active && ! DVIActive; then
+            echo "External monitors disconnected. Enabling laptop monitor."
             EnableLaptopDisplay
+        fi
+        if [ "$LAPTOP_DISPLAY_ENABLED" = "true" ] && HDMI2Active && DVIActive; then
+            echo "External monitors connected. Disabling laptop monitor."
+            EnableDualMonitorDisplay
         fi
 
         sleep 1
