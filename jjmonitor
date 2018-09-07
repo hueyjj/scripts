@@ -1,4 +1,36 @@
 #!/usr/bin/env sh
-xrandr --output eDP1 --off # Turn off laptop display
-xrandr --output HDMI2 --primary # Make center monitor primary
-xrandr --output HDMI2 --right-of DP1 # Align dual monitors
+
+LAPTOP=eDP1
+HDMI=HDMI2
+DVI=DP1
+
+function EnableLaptopDisplay {
+    xrandr --output $LAPTOP --auto --output $HDMI --off --output $DVI --off
+}
+
+function EnableDualMonitorDisplay {
+    xrandr --output $HDMI --auto --output $DVI --auto
+    xrandr --output $LAPTOP --off --output $HDMI --right-of $DVI
+}
+
+function HDMI2Active {
+    xrandr | grep "^\b$HDMI\b" | grep "\bconnected\b" >/dev/null
+}
+
+function DVIActive {
+    xrandr | grep "^\b$DVI\b" | grep "\bconnected\b" >/dev/null
+}
+
+while true
+do
+    if HDMI2Active && DVIActive 
+    then
+        echo "HDMI and DVI are both connected"
+        EnableDualMonitorDisplay
+    else
+        echo "HDMI or DVI is not connected. Enabling laptop displaying"
+        EnableLaptopDisplay
+    fi
+
+    sleep 1
+done
