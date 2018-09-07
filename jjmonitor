@@ -25,10 +25,8 @@ while true
 do
     if HDMI2Active && DVIActive 
     then
-        echo "HDMI and DVI are both connected"
         EnableDualMonitorDisplay
     else
-        echo "HDMI or DVI is not connected. Enabling laptop displaying"
         EnableLaptopDisplay
     fi
 
